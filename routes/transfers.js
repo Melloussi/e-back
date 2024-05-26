@@ -100,4 +100,22 @@ router.get('/:name', async (req, res) => {
     }
 });
 
+// @route   GET /api/transfers/
+// @desc    Get transfer all transfers
+// @access  Public
+router.get('/', async (req, res) => {
+  try {
+      const transfer = await Transfer.find({});
+      if (transfer) {
+          res.status(200).json(
+            transfer.map(obj => ({"TransferName":obj.name}))
+          );
+      } else {
+          res.status(404).json({ message: 'Transfer not found' });
+      }
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+});
+
 module.exports = router;
