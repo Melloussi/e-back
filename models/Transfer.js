@@ -14,6 +14,11 @@ const itemSchema = new mongoose.Schema({
 const transferSchema = new mongoose.Schema({
     name: { type: String, required: true },
     createdDate: { type: Date, default: Date.now },
+    status: {
+        type: String,
+        enum: ['pending', 'in progress', 'completed'],
+        default: 'pending'
+    },
     items: [itemSchema]
 });
 
@@ -21,3 +26,4 @@ const transferSchema = new mongoose.Schema({
 transferSchema.index({ 'items.itemTitle': 'text' });
 
 module.exports = mongoose.model('Transfer', transferSchema);
+

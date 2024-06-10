@@ -8,32 +8,7 @@ function convertQuantity(quantity) {
     return match ? parseInt(match[1], 10) : 0;
 }
 
-// @route   POST /api/transfers
-// @desc    Add new transfer with items
-// @access  Public
-/*
-router.post('/', async (req, res) => {
-    const { name, items } = req.body;
-    try {
-        const transferItems = items.map((item, index) => ({
-            ...item,
-            position: index + 1,
-            quantity: convertQuantity(item.quantity),
-            received: 0,
-            damage: 0
-        }));
 
-        const newTransfer = new Transfer({
-            name,
-            items: transferItems,
-        });
-
-        const savedTransfer = await newTransfer.save();
-        res.status(200).json(savedTransfer);
-    } catch (error) {
-        res.status(500).json({ error: error.message });
-    }
-});*/
 router.post('/', async (req, res) => {
     const { name, items } = req.body;
     try {
@@ -90,6 +65,7 @@ router.get('/:name', async (req, res) => {
             res.status(200).json({
                 name: transfer.name,
                 createdDate: transfer.createdDate,
+                status: transfer.status,
                 items: transfer.items
             });
         } else {
