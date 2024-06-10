@@ -54,6 +54,35 @@ router.put('/:name', async (req, res) => {
     }
   });
 
+  // @route   PUT /api/transfers/:name/status
+  // @desc    Update transfer status by transfer name
+  // @access  Public
+  router.put('/:name/status', async (req, res) => {
+  const { name } = req.params;
+  const { status } = req.body;
+
+  // Validate status
+  const validStatuses = ['pending', 'in progress', 'completed'];
+  if (!validStatuses.includes(status)) {
+      return res.status(400).json({ error: 'Invalid status' });
+  }
+
+  try {
+      const transfer = await Transfer.findOneAndUpdate(
+          { name },
+          { status },
+          { new: true }
+      );
+      if (!transfer) {
+          return res.status(404).json({ message: 'Transfer not found' });
+      }
+      res.status(200).json(transfer);
+  } catch (error) {
+      res.status(500).json({ error: error.message });
+  }
+});
+
+
 // @route   GET /api/transfers/:name
 // @desc    Get transfer items by transfer name
 // @access  Public
